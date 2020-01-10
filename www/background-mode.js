@@ -178,6 +178,38 @@ exports.disableBatteryOptimizations = function()
 };
 
 /**
+ * Opens the system settings screen for battery optimization, allowing the user to
+ * manually change the optimization settings.
+ *
+ * @return [ Void ]
+ */
+exports.openBatteryOptimizationsSettings = function()
+{
+    if (this._isAndroid)
+    {
+        cordova.exec(null, null, 'BackgroundModeExt', 'batterysettings', []);
+    }
+};
+
+/**
+ * Opens the system settings screen for battery optimization, allowing the user to
+ * manually change the optimization settings.
+ *
+ * @return [ Void ]
+ */
+exports.isIgnoringBatteryOptimizations = function(callback)
+{
+    if (this._isAndroid)
+    {
+        cordova.exec(callback, null, 'BackgroundModeExt', 'optimizationstatus', []);
+    }
+    else
+    {
+        callback(true);
+    }
+};
+
+/**
  * Opens the system settings dialog where the user can tweak or turn off any
  * custom app start settings added by the manufacturer if available.
  *
@@ -408,16 +440,24 @@ exports._isActive = false;
  *
  * Default values of all available options.
  */
-exports._defaults =
-{
-    title:   'App is running in background',
-    text:    'Doing heavy tasks.',
-    bigText: false,
-    resume:  true,
-    silent:  false,
-    hidden:  true,
-    color:   undefined,
-    icon:    'icon'
+
+exports._defaults = {
+    title:              'App is running in background',
+    text:               'Doing heavy tasks.',
+    subText:            '',
+    bigText:            false,
+    resume:             true,
+    silent:             false,
+    hidden:             true,
+    color:              undefined,
+    icon:               'icon',
+    channelName:        'cordova-plugin-background-mode',
+    channelDescription: 'cordova-plugin-background-moden notification',
+    allowClose:         false,
+    closeIcon:          'power',
+    closeTitle:         'Close',
+    showWhen:           true,
+    visibility:         undefined
 };
 
 /**
